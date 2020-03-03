@@ -37,7 +37,7 @@ public class OpenEnumRuleTest {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         model.build(new SingleStreamCodeWriter(os));
-        
+
         String expected = "-----------------------------------org.swisspush.jsonschema2pojo.openenum.Status.java-----------------------------------\n" +
                 "\n" +
                 "package org.swisspush.jsonschema2pojo.openenum;\n" +

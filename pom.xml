@@ -38,6 +38,14 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Swisspush Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/swisspush/jsonschema2pojo-openenum</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
