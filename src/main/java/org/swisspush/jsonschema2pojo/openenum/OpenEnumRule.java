@@ -161,7 +161,7 @@ public class OpenEnumRule implements Rule<JClassContainer, JType> {
 
                 JFieldVar constant = _enum.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, _enum, constantName);
 
-                constant.init(_enum.staticInvoke(factoryMethod).arg(JExpr.lit(constantName)));
+                constant.init(_enum.staticInvoke(factoryMethod).arg(JExpr.lit(value.asText())));
             }
         }
     }

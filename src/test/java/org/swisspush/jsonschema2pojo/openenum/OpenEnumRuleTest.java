@@ -27,8 +27,8 @@ public class OpenEnumRuleTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode arrayNode = objectMapper.createArrayNode();
-        arrayNode.add("open");
-        arrayNode.add("closed");
+        arrayNode.add("OPEN");
+        arrayNode.add("CLOSED");
         ObjectNode enumNode = objectMapper.createObjectNode();
         enumNode.put("type", "string");
         enumNode.set("enum", arrayNode);
@@ -52,6 +52,62 @@ public class OpenEnumRuleTest {
                 "    private final static Map<String, Status> values = new HashMap<String, Status>();\n" +
                 "    public final static Status OPEN = Status.fromString(\"OPEN\");\n" +
                 "    public final static Status CLOSED = Status.fromString(\"CLOSED\");\n" +
+                "    private String value;\n" +
+                "\n" +
+                "    private Status(String value) {\n" +
+                "        this.value = value;\n" +
+                "    }\n" +
+                "\n" +
+                "    @JsonCreator\n" +
+                "    public static Status fromString(String s) {\n" +
+                "        values.putIfAbsent(s, new Status(s));\n" +
+                "        return values.get(s);\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    @JsonValue\n" +
+                "    public String toString() {\n" +
+                "        return this.value;\n" +
+                "    }\n" +
+                "\n" +
+                "}" +
+                "\n";
+
+        assertEquals(expected, new String(os.toByteArray()).replace("\r\n", "\n"));
+    }
+
+    @Test
+    public void testLowercaseValues() throws IOException {
+        JCodeModel model = new JCodeModel();
+        JPackage jpackage = model._package(getClass().getPackage().getName());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+        arrayNode.add("open");
+        arrayNode.add("closed");
+        ObjectNode enumNode = objectMapper.createObjectNode();
+        enumNode.put("type", "string");
+        enumNode.set("enum", arrayNode);
+
+        rule.apply("status", enumNode, null, jpackage, schema);
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        model.build(new SingleStreamCodeWriter(os));
+
+        String expected = "-----------------------------------org.swisspush.jsonschema2pojo.openenum.Status.java-----------------------------------\n" +
+                "\n" +
+                "package org.swisspush.jsonschema2pojo.openenum;\n" +
+                "\n" +
+                "import java.util.HashMap;\n" +
+                "import java.util.Map;\n" +
+                "import com.fasterxml.jackson.annotation.JsonCreator;\n" +
+                "import com.fasterxml.jackson.annotation.JsonValue;\n" +
+                "\n" +
+                "public class Status {\n" +
+                "\n" +
+                "    private final static Map<String, Status> values = new HashMap<String, Status>();\n" +
+                "    public final static Status OPEN = Status.fromString(\"open\");\n" +
+                "    public final static Status CLOSED = Status.fromString(\"closed\");\n" +
                 "    private String value;\n" +
                 "\n" +
                 "    private Status(String value) {\n" +
