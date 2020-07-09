@@ -6,7 +6,7 @@
 
     <groupId>org.swisspush.jsonschema2pojo</groupId>
     <artifactId>jsonschema2pojo-openenum</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 
     <properties>
         <jsonschema2pojo.version>1.0.1</jsonschema2pojo.version>
